@@ -7,7 +7,8 @@ from collections import Counter
 
 # Load API key
 load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+
 
 # Session counters
 if "total_cases" not in st.session_state:
