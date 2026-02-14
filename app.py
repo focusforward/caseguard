@@ -138,6 +138,14 @@ Output priority:
 The "defensible_note" must always be produced as a complete chart entry.
 Even if information is minimal, never replace it with guidance or suggestions.
 The "reasoning" field may explain briefly, but the defensible_note is mandatory and takes priority.
+For chronic or non-acute complaints (e.g., joint pains, chronic conditions, medication review),
+use neutral follow-up phrasing instead of emergency or acute wording.
+
+Acceptable minimal structure:
+"[complaint] evaluated. Symptomatic treatment given. Advised follow-up as planned or earlier if symptoms worsen."
+
+Do not switch to instructions when details are limited.
+
 
 
 
