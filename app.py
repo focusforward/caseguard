@@ -51,6 +51,16 @@ OUTPUT:
 }
 
 INPUT:
+4 yr repeated vomiting sleepy after treatment discharged
+OUTPUT:
+{
+ "classification": "BORDERLINE",
+ "missing_anchors": [],
+ "reasoning": "Post-vomiting drowsiness may require observation documentation.",
+ "suggested_documentation": "Clarify alertness and hydration status.",
+ "defensible_note": "4-year-old with multiple vomiting episodes treated with fluids. Child comfortable and arousable at discharge. Advised urgent return if persistent vomiting, lethargy, or poor intake."
+}
+INPUT:
 20 yr contact lens irritation right eye 1 day moxifloxacin ketorolac
 OUTPUT:
 {
