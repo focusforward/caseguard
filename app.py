@@ -104,6 +104,8 @@ Rules:
 -These describe clinical reasoning and are allowed even if not explicitly written, because they do not introduce new clinical findings.
 -Do NOT switch to giving instructions — always produce a finished note.
 -Prefer extending the original sentence instead of rewriting from scratch whenever possible.
+-Avoid repeating words or phrases from the original note unnecessarily and produce only one final version of the note.
+
 
 
 
