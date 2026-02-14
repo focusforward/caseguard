@@ -42,6 +42,22 @@ OUTPUT:
  "suggested_documentation": "Add reasoning and safety-net advice.",
  "defensible_note": "25-year-old with chest pain treated symptomatically. Advised urgent return if pain persists, worsens, or new symptoms develop."
 }
+INPUT:
+60M diabetes weakness sugar 50 given dextrose discharge
+
+OUTPUT:
+{
+ "classification": "BORDERLINE",
+ "missing_anchors": [
+   "post-treatment reassessment",
+   "cause assessment",
+   "observation reasoning",
+   "safety-net advice"
+ ],
+ "reasoning": "Hypoglycaemia corrected but stability and recurrence risk not documented.",
+ "suggested_documentation": "Document repeat glucose after recovery, possible cause, oral intake, and return precautions.",
+ "defensible_note": "60-year-old diabetic presented with hypoglycaemia (glucose 50). After dextrose, repeat glucose normal and patient asymptomatic, tolerating oral intake. Likely medication-related episode. Advised regular meals and to return if dizziness, sweating, or altered sensorium recur."
+}
 
 INPUT:
 3 yr old breathless wheeze given nebulization sleeping peacefully discharge
