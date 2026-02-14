@@ -1,3 +1,5 @@
+import streamlit.components.v1 as components
+
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
@@ -19,7 +21,11 @@ st.caption("Assistive documentation review tool. Clinical decisions remain with 
 
 st.info(f"Cases reviewed this session: {st.session_state.total_cases}")
 
-note = st.text_area("Paste Emergency Case Note", height=300)
+note = st.text_area("Paste Case Note", height=300, key="input_note")
+
+if st.button("Clear"):
+    st.session_state.input_note = ""
+
 
 # ===== SYSTEM PROMPT =====
 system_prompt = """
@@ -196,11 +202,28 @@ if st.button("Review Documentation"):
             # ---- DISPLAY CLEAN REPORT ----
             st.subheader(f"Risk Level: {data['classification']}")
 
-            st.write("**Suggested Documentation Improvements**")
-            st.text_area("Guidance", data["suggested_documentation"], height=150)
+# ---- Suggested Documentation ----
+st.write("**Suggested Documentation Improvements**")
+st.text_area("Guidance", data["suggested_documentation"], height=150, key="guide")
 
-            st.write("**Defensible Chart Version (Ready to Paste)**")
-            st.text_area("Final Note", data["defensible_note"], height=220)
+if st.button("Copy Guidance"):
+    components.html(f"""
+    <script>
+    navigator.clipboard.writeText({repr(data["suggested_documentation"])});
+    </script>
+    """, height=0)
+
+# ---- Final Note ----
+st.write("**Defensible Chart Version (Ready to Paste)**")
+st.text_area("Final Note", data["defensible_note"], height=220, key="final")
+
+if st.button("Copy Final Note"):
+    components.html(f"""
+    <script>
+    navigator.clipboard.writeText({repr(data["defensible_note"])});
+    </script>
+    """, height=0)
+
 
         except Exception as e:
             st.error("AI generation error:")
