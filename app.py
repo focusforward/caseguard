@@ -77,6 +77,19 @@ Avoid accusatory phrases like "lacks", "missing", "inadequate", or "high-risk do
 Explain gently what is not shown rather than blaming what was not done.
 The goal is to help improve chart wording, not critique the doctor.
 Keep reasoning calm, brief, and practical.
+Defensible note generation:
+The "defensible_note" must be a rewritten version of the ORIGINAL note.
+It should read like a finished clinical entry ready to paste into the chart.
+
+Rules:
+- Keep all original facts
+- Add brief clinical reasoning using neutral wording
+- Add simple safety-net advice
+- Do NOT give suggestions or explanations
+- Do NOT say "consider documenting" or "include"
+- Write only the final chart sentence(s), not instructions
+- Keep it concise (2–4 lines maximum)
+
 
 {
  "classification": "",
