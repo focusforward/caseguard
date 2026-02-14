@@ -55,10 +55,15 @@ classification should usually be DANGEROUS.
 If only safety-net advice or discharge reasoning is missing,
 classification should usually be BORDERLINE.
 
-Low-risk reassurance patterns:
-Child fever with playful/feeding well, reproducible musculoskeletal pain,
-mild viral symptoms with normal activity, recurrent similar pain with relief
-should usually be SAFE unless major danger signs are present.
+Low-risk reassurance override:
+For common benign presentations, reassuring behaviour is strong evidence of safety.
+
+If a child with fever is described as playful, active, feeding well, or passing urine,
+this OVERRIDES missing vitals or formal discharge wording.
+Such cases should be classified SAFE unless a specific danger feature is documented.
+
+Do not downgrade to BORDERLINE only because safety-net advice or vitals are not written
+when reassuring behaviour is clearly present.
 
 Classification rules:
 0–1 missing → SAFE
