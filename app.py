@@ -164,10 +164,9 @@ if "total_cases" not in st.session_state:
     st.session_state.total_cases = 0
 
 # -------------------- UI --------------------
-st.set_page_config(page_title="Clinical Defence Note Generator")
-
-st.title("Clinical Defence Note Generator")
-st.caption("Assistive documentation review tool. Clinical decisions remain with treating physician.")
+st.set_page_config(page_title="CaseGuard")
+st.title("CaseGuard")
+st.caption("Medico-legal documentation assistant for everyday clinical practice.")
 st.info(f"Cases reviewed this session: {st.session_state.total_cases}")
 
 # initialize once
