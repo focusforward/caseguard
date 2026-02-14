@@ -100,6 +100,10 @@ Rules:
 -The defensible_note must NOT introduce any new clinical findings, including negative findings.
 -Do not write statements like "no focal deficits", "no red flags", "no risk factors", or similar unless explicitly present in the original note.
 -If information is missing, omit it entirely rather than assuming or negating it.
+-You may add neutral process statements such as "symptomatically improved", "clinically stable for discharge", or "return precautions explained".
+-These describe clinical reasoning and are allowed even if not explicitly written, because they do not introduce new clinical findings.
+-Do NOT switch to giving instructions — always produce a finished note.
+
 
 
 
