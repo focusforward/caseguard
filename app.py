@@ -40,6 +40,18 @@ OUTPUT:
 }
 
 INPUT:
+45M severe headache BP 160/95 CT head negative pain improved discharged
+
+OUTPUT:
+{
+ "classification": "SAFE",
+ "missing_anchors": [],
+ "reasoning": "Serious intracranial pathology excluded and symptoms improved.",
+ "suggested_documentation": "Brief reassurance context if assessed.",
+ "defensible_note": "45-year-old male with severe headache. BP 160/95. CT head negative. Pain improved after treatment. Discharged with advice to return if worsening headache, neurological symptoms, or persistent vomiting."
+}
+
+INPUT:
 32F RLQ pain CBC normal CT negative appendicitis discharged analgesics
 
 OUTPUT:
