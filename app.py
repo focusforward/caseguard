@@ -134,6 +134,11 @@ Do not switch to advice mode.
 
 Example acceptable minimal output:
 "Right eye irritation for 1 day in contact lens user. Treatment started as above. Advised review if symptoms persist or worsen."
+Output priority:
+The "defensible_note" must always be produced as a complete chart entry.
+Even if information is minimal, never replace it with guidance or suggestions.
+The "reasoning" field may explain briefly, but the defensible_note is mandatory and takes priority.
+
 
 
 
