@@ -114,11 +114,11 @@ if st.button("Review Documentation"):
             # ---- DISPLAY CLEAN REPORT ----
             st.subheader(f"Risk Level: {data['classification']}")
 
-            st.write("**Reason**")
-            st.write(data["reasoning"])
+            st.write("**Suggested Documentation Improvements**")
+            st.text_area("Guidance", data["suggested_documentation"], height=150)
 
-            st.write("**Suggested Documentation**")
-            st.text_area("Editable Note", data["suggested_documentation"], height=200)
+            st.write("**Defensible Chart Version (Ready to Paste)**")
+            st.text_area("Final Note", data["defensible_note"], height=220)
 
         except Exception as e:
             st.error("AI generation error:")
