@@ -87,7 +87,11 @@ st.title("Clinical Defence Note Generator")
 st.caption("Assistive documentation review tool. Clinical decisions remain with treating physician.")
 st.info(f"Cases reviewed this session: {st.session_state.total_cases}")
 
-note = st.text_area("Paste Case Note", height=250, key="input_note")
+# initialize once
+if "note_value" not in st.session_state:
+    st.session_state.note_value = ""
+
+note = st.text_area("Paste Case Note", height=250, key="note_value")
 
 col1, col2 = st.columns(2)
 
