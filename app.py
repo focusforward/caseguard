@@ -187,8 +187,14 @@ if st.session_state.result:
     guidance = data.get("suggested_documentation","").strip()
 
     if guidance:
-        st.write("### Suggested Documentation Improvements")
-        st.text_area("Guidance", guidance, height=130)
+        risk = data.get("classification","")
+guidance = data.get("suggested_documentation","").strip()
+
+if risk != "SAFE" and guidance:
+    st.write("### Suggested Documentation Improvements")
+    st.text_area("Guidance", guidance, height=130)
+elif risk == "SAFE":
+    st.success("No additional documentation improvement needed")
 
         components.html(f"""
             <textarea id="guidecopy" style="width:100%;height:60px;">{guidance}</textarea>
