@@ -118,7 +118,7 @@ with col1:
                         {"role": "system", "content": system_prompt},
                         {"role": "user", "content": note}
                     ],
-                    temperature=0
+                    temperature=0,
                  response_format={"type": "json_object"}
   )
 
