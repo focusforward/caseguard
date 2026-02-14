@@ -71,6 +71,13 @@ Classification rules:
 4–5 missing → DANGEROUS
 
 Return STRICT JSON:
+Tone guidance:
+Write like a supportive senior colleague, not an auditor.
+Avoid accusatory phrases like "lacks", "missing", "inadequate", or "high-risk documentation failure".
+Explain gently what is not shown rather than blaming what was not done.
+The goal is to help improve chart wording, not critique the doctor.
+Keep reasoning calm, brief, and practical.
+
 {
  "classification": "",
  "missing_anchors": [],
