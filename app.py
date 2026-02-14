@@ -46,6 +46,13 @@ You must follow a strict 5-anchor review:
 (vitals, exam findings, ECG, glucose, imaging, reassessment)
 
 Count how many anchors are missing.
+Important interpretation rule:
+Clinical notes are often brief. If a doctor documents absence of a concerning feature
+(e.g., "no breathlessness", "active child", "walking normally", "pain reproducible"),
+this counts as partial evidence that danger assessment or discharge reasoning was performed.
+Do not require perfect wording. Credit reasonable implied clinical thinking.
+Only mark an anchor missing if the note gives no indication it was considered.
+
 
 Classification rules:
 0–1 missing → SAFE
