@@ -2,13 +2,13 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import os
 import streamlit as st
-from collections import Counter
+import json
 
 # Load API key
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# Session counters
+# Session counter
 if "total_cases" not in st.session_state:
     st.session_state.total_cases = 0
 
@@ -31,43 +31,23 @@ Your role is to evaluate whether the written note can be defended if outcome bec
 You must follow a strict 5-anchor review:
 
 1) Danger assessment documented
-(screening for serious symptoms relevant to complaint)
-
 2) Risk context documented
-(age, comorbidity, duration, mechanism)
-
 3) Discharge reasoning documented
-(why safe to send home — improved, tolerating feeds, reproducible pain, observed etc.)
-
 4) Safety-net advice documented
-(review, return precautions, warning signs)
-
 5) Objective data documented
-(vitals, exam findings, ECG, glucose, imaging, reassessment)
 
 Count how many anchors are missing.
+
 Important interpretation rule:
 Clinical notes are often brief. If a doctor documents absence of a concerning feature
 (e.g., "no breathlessness", "active child", "walking normally", "pain reproducible"),
 this counts as partial evidence that danger assessment or discharge reasoning was performed.
 Do not require perfect wording. Credit reasonable implied clinical thinking.
 Only mark an anchor missing if the note gives no indication it was considered.
+
 Risk weighting guidance:
-Low-risk reassurance patterns:
-Certain presentations are commonly safe when normal behaviour or typical benign features are documented.
-
-Examples include:
-- Child with fever who is playful, active, feeding well, or passing urine
-- Musculoskeletal pain reproducible on movement without red flags
-- Mild viral symptoms with normal activity and hydration
-- Recurrent similar pain with relief and normal exam
-
-In such cases, absence of extensive vitals or investigations should NOT automatically increase risk.
-If reassuring behaviour is clearly documented, classification should usually be SAFE unless major danger features are mentioned.
-
-Some missing anchors carry higher significance depending on the complaint.
-
-High-risk presentations include chest pain, breathlessness, syncope, focal weakness, persistent vomiting, head injury, high fever in child, or altered sensorium.
+High-risk presentations include chest pain, breathlessness, syncope, focal weakness,
+persistent vomiting, head injury, high fever in child, or altered sensorium.
 
 If objective data OR danger assessment is missing in a high-risk presentation,
 classification should usually be DANGEROUS.
@@ -75,32 +55,23 @@ classification should usually be DANGEROUS.
 If only safety-net advice or discharge reasoning is missing,
 classification should usually be BORDERLINE.
 
-If most anchors are present and only one minor element missing,
-classification should be SAFE.
-
-
+Low-risk reassurance patterns:
+Child fever with playful/feeding well, reproducible musculoskeletal pain,
+mild viral symptoms with normal activity, recurrent similar pain with relief
+should usually be SAFE unless major danger signs are present.
 
 Classification rules:
 0–1 missing → SAFE
 2–3 missing → BORDERLINE
 4–5 missing → DANGEROUS
 
-Output STRICT JSON only:
-
+Return STRICT JSON:
 {
-  "classification": "SAFE | BORDERLINE | DANGEROUS",
-  "missing_anchors": ["list of missing anchors"],
-  "reasoning": "short explanation in plain clinical language",
-  "suggested_documentation": "one short paragraph improving defensibility"
+ "classification": "",
+ "missing_anchors": [],
+ "reasoning": "",
+ "suggested_documentation": ""
 }
-
-Rules:
-- Never recommend treatment or diagnosis
-- Never mention lawsuits or blame
-- Do not be alarmist
-- Be concise and neutral
-- If SAFE → suggested_documentation should justify discharge
-- If BORDERLINE or DANGEROUS → suggested_documentation should add clarifying documentation only
 """
 
 # ===== BUTTON =====
@@ -122,10 +93,19 @@ if st.button("Review Documentation"):
                 temperature=0
             )
 
-            result = response.choices[0].message.content
+            raw = response.choices[0].message.content
 
-            st.subheader("Audit Result")
-            st.code(result)
+            # convert JSON text → python dict
+            data = json.loads(raw)
+
+            # ---- DISPLAY CLEAN REPORT ----
+            st.subheader(f"Risk Level: {data['classification']}")
+
+            st.write("**Reason**")
+            st.write(data["reasoning"])
+
+            st.write("**Suggested Documentation**")
+            st.text_area("Editable Note", data["suggested_documentation"], height=200)
 
         except Exception as e:
             st.error("AI generation error:")
