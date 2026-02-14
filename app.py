@@ -44,6 +44,23 @@ OUTPUT:
 }
 
 INPUT:
+3 yr old breathless wheeze given nebulization sleeping peacefully discharge
+
+OUTPUT:
+{
+ "classification": "BORDERLINE",
+ "missing_anchors": [
+   "objective reassessment",
+   "severity documentation",
+   "safety-net advice",
+   "discharge reasoning"
+ ],
+ "reasoning": "Symptomatic improvement documented but stability not objectively demonstrated.",
+ "suggested_documentation": "Document respiratory rate, work of breathing, oxygen saturation, and clear return precautions after treatment response.",
+ "defensible_note": "3-year-old with wheeze improved after nebulisation. Respiratory rate and oxygen saturation normal with no retractions. Tolerating oral intake. Parents advised to return for fast breathing, retractions, poor feeding, or worsening symptoms."
+}
+
+INPUT:
 45M severe headache BP 160/95 CT head negative pain improved discharged
 
 OUTPUT:
