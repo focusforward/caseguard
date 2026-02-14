@@ -149,9 +149,18 @@ if st.session_state.result:
     final_text = data.get("defensible_note", "")
     st.text_area("Final Note", final_text, height=220, key="final")
 
-    if st.button("Copy Final Note"):
-        components.html(f"""
+    if st.markdown("**Copy Final Note**")
+
+    components.html(f"""
+        <textarea id="copytext" style="width:100%;height:80px;">{final_text}</textarea>
+        <button onclick="copyText()">Copy to clipboard</button>
+
         <script>
-        navigator.clipboard.writeText({repr(final_text)});
+        function copyText() {{
+            var copyText = document.getElementById("copytext");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            document.execCommand("copy");
+        }}
         </script>
-        """, height=0)
+    """, height=150)
