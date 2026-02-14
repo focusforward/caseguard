@@ -89,6 +89,8 @@ Rules:
 - Do NOT say "consider documenting" or "include"
 - Write only the final chart sentence(s), not instructions
 - Keep it concise (2–4 lines maximum)
+-Never invent examination findings, vitals, or investigations that were not stated or clearly implied in the original note.
+-If information is absent, phrase it neutrally (e.g., "no concerning features reported") rather than creating new clinical data.
 
 
 {
