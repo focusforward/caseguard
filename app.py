@@ -118,8 +118,8 @@ with col1:
 # -------- CLEAR BUTTON --------
 with col2:
     if st.button("Clear"):
-        st.session_state.input_note = ""
-        st.session_state.result = None
+        st.session_state.clear()
+        st.rerun()
 
 # -------------------- DISPLAY --------------------
 if st.session_state.result:
