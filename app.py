@@ -97,6 +97,10 @@ Rules:
 -Never add new clinical facts (positive or negative) that were not stated in the original note.
 -Do not assume absence of symptoms, past history, exam findings, or risk factors.
 -Only rephrase existing information and add generic safety-net advice.
+-The defensible_note must NOT introduce any new clinical findings, including negative findings.
+-Do not write statements like "no focal deficits", "no red flags", "no risk factors", or similar unless explicitly present in the original note.
+-If information is missing, omit it entirely rather than assuming or negating it.
+
 
 
 
