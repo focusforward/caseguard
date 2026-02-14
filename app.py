@@ -94,6 +94,10 @@ Rules:
 -Preserve the original sentence structure when possible and only expand weak parts instead of completely rewriting the style.
 -Do NOT include commentary about documentation quality (e.g., "no objective data documented", "risk factors not mentioned", "information absent").
 -Write only patient-care statements suitable for a medical record.
+-Never add new clinical facts (positive or negative) that were not stated in the original note.
+-Do not assume absence of symptoms, past history, exam findings, or risk factors.
+-Only rephrase existing information and add generic safety-net advice.
+
 
 
 
