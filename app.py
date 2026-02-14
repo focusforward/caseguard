@@ -52,6 +52,20 @@ Clinical notes are often brief. If a doctor documents absence of a concerning fe
 this counts as partial evidence that danger assessment or discharge reasoning was performed.
 Do not require perfect wording. Credit reasonable implied clinical thinking.
 Only mark an anchor missing if the note gives no indication it was considered.
+Risk weighting guidance:
+Some missing anchors carry higher significance depending on the complaint.
+
+High-risk presentations include chest pain, breathlessness, syncope, focal weakness, persistent vomiting, head injury, high fever in child, or altered sensorium.
+
+If objective data OR danger assessment is missing in a high-risk presentation,
+classification should usually be DANGEROUS.
+
+If only safety-net advice or discharge reasoning is missing,
+classification should usually be BORDERLINE.
+
+If most anchors are present and only one minor element missing,
+classification should be SAFE.
+
 
 
 Classification rules:
