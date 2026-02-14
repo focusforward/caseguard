@@ -92,6 +92,9 @@ Rules:
 -Never invent examination findings, vitals, or investigations that were not stated or clearly implied in the original note.
 -If information is absent, phrase it neutrally (e.g., "no concerning features reported") rather than creating new clinical data.
 -Preserve the original sentence structure when possible and only expand weak parts instead of completely rewriting the style.
+-Do NOT include commentary about documentation quality (e.g., "no objective data documented", "risk factors not mentioned", "information absent").
+-Write only patient-care statements suitable for a medical record.
+
 
 
 
