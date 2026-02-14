@@ -5,11 +5,11 @@ import streamlit as st
 import json
 import streamlit.components.v1 as components
 
-# Load API key
+# -------------------- LOAD KEY --------------------
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# ===== SYSTEM PROMPT =====
+# -------------------- SYSTEM PROMPT --------------------
 system_prompt = """
 You are a clinical documentation assistant.
 Rewrite rough clinical notes into concise, defensible chart entries.
@@ -73,26 +73,25 @@ OUTPUT:
 }
 """
 
-# Session storage
-if "total_cases" not in st.session_state:
-    st.session_state.total_cases = 0
-
+# -------------------- SESSION STATE --------------------
 if "result" not in st.session_state:
     st.session_state.result = None
 
+if "total_cases" not in st.session_state:
+    st.session_state.total_cases = 0
+
+# -------------------- UI --------------------
 st.set_page_config(page_title="Clinical Defence Note Generator")
 
 st.title("Clinical Defence Note Generator")
 st.caption("Assistive documentation review tool. Clinical decisions remain with treating physician.")
-
 st.info(f"Cases reviewed this session: {st.session_state.total_cases}")
 
-# Input
-note = st.text_area("Paste Case Note", height=300, key="input_note")
+note = st.text_area("Paste Case Note", height=250, key="input_note")
 
 col1, col2 = st.columns(2)
 
-# Review button
+# -------- REVIEW BUTTON --------
 with col1:
     if st.button("Review Documentation"):
         if note.strip() == "":
@@ -116,51 +115,55 @@ with col1:
                 st.error("AI generation error:")
                 st.code(str(e))
 
-# Clear button
+# -------- CLEAR BUTTON --------
 with col2:
     if st.button("Clear"):
         st.session_state.input_note = ""
         st.session_state.result = None
 
-# ===== DISPLAY RESULT =====
+# -------------------- DISPLAY --------------------
 if st.session_state.result:
 
     data = st.session_state.result
 
-    st.subheader(f"Risk Level: {data['classification']}")
+    st.subheader(f"Risk Level: {data.get('classification','')}")
 
-    # Guidance
-    guidance_text = data.get("suggested_documentation", "").strip()
-    if guidance_text:
-        st.write("**Suggested Documentation Improvements**")
-        st.text_area("Guidance", guidance_text, height=150, key="guide")
+    # -------- GUIDANCE --------
+    guidance = data.get("suggested_documentation","").strip()
 
-        if st.button("Copy Guidance"):
-            components.html(f"""
+    if guidance:
+        st.write("### Suggested Documentation Improvements")
+        st.text_area("Guidance", guidance, height=130)
+
+        components.html(f"""
+            <textarea id="guidecopy" style="width:100%;height:60px;">{guidance}</textarea>
+            <button onclick="copyGuide()">Copy Guidance</button>
             <script>
-            navigator.clipboard.writeText({repr(guidance_text)});
+            function copyGuide() {{
+                var copyText = document.getElementById("guidecopy");
+                copyText.select();
+                document.execCommand("copy");
+            }}
             </script>
-            """, height=0)
+        """, height=120)
+
     else:
         st.success("No additional documentation improvement needed")
 
-    # Final note
-    st.write("**Defensible Chart Version (Ready to Paste)**")
-    final_text = data.get("defensible_note", "")
-    st.text_area("Final Note", final_text, height=220, key="final")
+    # -------- FINAL NOTE --------
+    final_note = data.get("defensible_note","")
 
-    if st.markdown("**Copy Final Note**")
+    st.write("### Defensible Chart Version (Ready to Paste)")
+    st.text_area("Final Note", final_note, height=180)
 
     components.html(f"""
-        <textarea id="copytext" style="width:100%;height:80px;">{final_text}</textarea>
-        <button onclick="copyText()">Copy to clipboard</button>
-
+        <textarea id="finalcopy" style="width:100%;height:80px;">{final_note}</textarea>
+        <button onclick="copyFinal()">Copy Final Note</button>
         <script>
-        function copyText() {{
-            var copyText = document.getElementById("copytext");
+        function copyFinal() {{
+            var copyText = document.getElementById("finalcopy");
             copyText.select();
-            copyText.setSelectionRange(0, 99999);
             document.execCommand("copy");
         }}
         </script>
-    """, height=150)
+    """, height=140)
