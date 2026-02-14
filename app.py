@@ -122,7 +122,12 @@ if st.button("Review Documentation"):
 
             # Suggested documentation
             st.write("**Suggested Documentation Improvements**")
-            st.text_area("Guidance", data["suggested_documentation"], height=150, key="guide")
+            guidance_text = data.get("suggested_documentation","").strip()
+
+if guidance_text:
+    st.text_area("Guidance", guidance_text, height=150, key="guide")
+else:
+    st.success("No additional documentation improvement needed")
 
             if st.button("Copy Guidance"):
                 components.html(f"""
