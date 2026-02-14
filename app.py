@@ -53,6 +53,18 @@ this counts as partial evidence that danger assessment or discharge reasoning wa
 Do not require perfect wording. Credit reasonable implied clinical thinking.
 Only mark an anchor missing if the note gives no indication it was considered.
 Risk weighting guidance:
+Low-risk reassurance patterns:
+Certain presentations are commonly safe when normal behaviour or typical benign features are documented.
+
+Examples include:
+- Child with fever who is playful, active, feeding well, or passing urine
+- Musculoskeletal pain reproducible on movement without red flags
+- Mild viral symptoms with normal activity and hydration
+- Recurrent similar pain with relief and normal exam
+
+In such cases, absence of extensive vitals or investigations should NOT automatically increase risk.
+If reassuring behaviour is clearly documented, classification should usually be SAFE unless major danger features are mentioned.
+
 Some missing anchors carry higher significance depending on the complaint.
 
 High-risk presentations include chest pain, breathlessness, syncope, focal weakness, persistent vomiting, head injury, high fever in child, or altered sensorium.
