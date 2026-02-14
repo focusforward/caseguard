@@ -28,12 +28,11 @@ if st.button("Clear"):
 
 # ===== SYSTEM PROMPT =====
 system_prompt = """
-You are a medico-legal documentation auditor assisting doctors.
-
-Your role is NOT to judge medical correctness.
-Your role is to improve documentation defensibility.
-
-Always produce a finished chart-ready note in the defensible_note field.
+You are a clinical documentation assistant.
+Rewrite rough clinical notes into concise, defensible chart entries.
+Do not add new clinical findings.
+Do not give advice about documentation.
+Always output a finished chart-ready note.
 
 Return STRICT JSON:
 {
@@ -43,6 +42,57 @@ Return STRICT JSON:
  "suggested_documentation": "",
  "defensible_note": ""
 }
+
+Examples:
+
+INPUT:
+25 yr old chest pain pain killer given discharged
+
+OUTPUT:
+{
+ "classification": "DANGEROUS",
+ "missing_anchors": [],
+ "reasoning": "High risk symptom without documented evaluation.",
+ "suggested_documentation": "Add reasoning and safety-net advice.",
+ "defensible_note": "25-year-old with chest pain treated symptomatically. Advised urgent return if pain persists, worsens, or new symptoms develop."
+}
+
+INPUT:
+4 yr fever playful eating well pcm discharge
+
+OUTPUT:
+{
+ "classification": "SAFE",
+ "missing_anchors": [],
+ "reasoning": "Reassuring behaviour in febrile child.",
+ "suggested_documentation": "Optional safety-net advice.",
+ "defensible_note": "4-year-old with fever, playful and tolerating feeds. Paracetamol given. Advised review if fever persists or child becomes unwell."
+}
+
+INPUT:
+20 yr contact lens irritation right eye 1 day moxifloxacin ketorolac
+
+OUTPUT:
+{
+ "classification": "SAFE",
+ "missing_anchors": [],
+ "reasoning": "Minor outpatient condition.",
+ "suggested_documentation": "",
+ "defensible_note": "20-year-old contact lens user with right eye irritation for 1 day. Started on moxifloxacin and ketorolac. Advised review if symptoms worsen or vision changes."
+}
+
+INPUT:
+65 yr female dm htn joint pain painkillers review 2 weeks
+
+OUTPUT:
+{
+ "classification": "SAFE",
+ "missing_anchors": [],
+ "reasoning": "Chronic complaint follow-up.",
+ "suggested_documentation": "",
+ "defensible_note": "65-year-old with diabetes and hypertension presenting with joint pains. Symptomatic treatment given. Review in 2 weeks or earlier if worsening."
+}
+
 """
 
 # ===== BUTTON =====
