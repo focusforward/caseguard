@@ -46,7 +46,7 @@ OUTPUT:
 {
  "classification": "SAFE",
  "missing_anchors": [],
- "reasoning": "Serious intracranial pathology excluded and symptoms improved.",
+ "reasoning": "Serious intracranial causes evaluated and excluded with symptom improvement.",
  "suggested_documentation": "Brief reassurance context if assessed.",
  "defensible_note": "45-year-old male with severe headache. BP 160/95. CT head negative. Pain improved after treatment. Discharged with advice to return if worsening headache, neurological symptoms, or persistent vomiting."
 }
@@ -58,7 +58,7 @@ OUTPUT:
 {
  "classification": "SAFE",
  "missing_anchors": [],
- "reasoning": "Definitive imaging ruled out acute surgical pathology.",
+ "reasoning": "High-risk condition investigated and excluded; symptoms improved allowing safe discharge.",
  "suggested_documentation": "Optional brief clinical context if assessed.",
  "defensible_note": "32-year-old female with right lower quadrant pain. CBC normal. CT abdomen/pelvis negative for appendicitis. Discharged with analgesics and advised return if worsening pain, fever, or new symptoms."
 }
