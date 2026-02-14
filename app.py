@@ -2,20 +2,15 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import os
 import streamlit as st
-from rules import analyze_note
 from collections import Counter
 
 # Load API key
 load_dotenv()
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
-
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Session counters
 if "total_cases" not in st.session_state:
     st.session_state.total_cases = 0
-
-if "risk_log" not in st.session_state:
-    st.session_state.risk_log = []
 
 st.set_page_config(page_title="Clinical Defence Note Generator")
 
@@ -26,6 +21,56 @@ st.info(f"Cases reviewed this session: {st.session_state.total_cases}")
 
 note = st.text_area("Paste Emergency Case Note", height=300)
 
+# ===== SYSTEM PROMPT =====
+system_prompt = """
+You are a medico-legal documentation auditor assisting doctors.
+
+Your role is NOT to judge medical correctness.
+Your role is to evaluate whether the written note can be defended if outcome becomes adverse.
+
+You must follow a strict 5-anchor review:
+
+1) Danger assessment documented
+(screening for serious symptoms relevant to complaint)
+
+2) Risk context documented
+(age, comorbidity, duration, mechanism)
+
+3) Discharge reasoning documented
+(why safe to send home — improved, tolerating feeds, reproducible pain, observed etc.)
+
+4) Safety-net advice documented
+(review, return precautions, warning signs)
+
+5) Objective data documented
+(vitals, exam findings, ECG, glucose, imaging, reassessment)
+
+Count how many anchors are missing.
+
+Classification rules:
+0–1 missing → SAFE
+2–3 missing → BORDERLINE
+4–5 missing → DANGEROUS
+
+Output STRICT JSON only:
+
+{
+  "classification": "SAFE | BORDERLINE | DANGEROUS",
+  "missing_anchors": ["list of missing anchors"],
+  "reasoning": "short explanation in plain clinical language",
+  "suggested_documentation": "one short paragraph improving defensibility"
+}
+
+Rules:
+- Never recommend treatment or diagnosis
+- Never mention lawsuits or blame
+- Do not be alarmist
+- Be concise and neutral
+- If SAFE → suggested_documentation should justify discharge
+- If BORDERLINE or DANGEROUS → suggested_documentation should add clarifying documentation only
+"""
+
+# ===== BUTTON =====
 if st.button("Review Documentation"):
 
     st.session_state.total_cases += 1
@@ -34,63 +79,21 @@ if st.button("Review Documentation"):
         st.warning("Please paste a case note")
 
     else:
-        flags = analyze_note(note)
+        try:
+            response = client.chat.completions.create(
+                model="gpt-4.1-mini",
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": note}
+                ],
+                temperature=0
+            )
 
-        if len(flags) == 0:
-            st.success("No major documentation clarification required")
+            result = response.choices[0].message.content
 
-        else:
-            st.subheader("Clarifications Recommended")
-            for f in flags:
-                st.warning(f)
+            st.subheader("Audit Result")
+            st.code(result)
 
-            # store risks
-            st.session_state.risk_log.extend(flags)
-
-            prompt = f"""
-You are assisting a doctor in documenting reasoning.
-
-Patient note:
-{note}
-
-Concerns:
-{flags}
-
-Write a short clinical justification paragraph explaining reasonable medical decision-making.
-Do NOT give treatment advice. Only explain reasoning.
-"""
-
-            try:
-                response = client.chat.completions.create(
-                    model="gpt-4.1-mini",
-                    messages=[{"role":"user","content":prompt}]
-                )
-
-                defence_text = response.choices[0].message.content
-
-                st.subheader("Suggested Documentation")
-                st.text_area("Editable Note", defence_text, height=200)
-                st.caption("Doctor may edit before pasting into case sheet.")
-
-            except Exception as e:
-                st.error("AI generation error:")
-                st.code(str(e))
-
-
-# -------- SESSION REPORT --------
-st.divider()
-st.subheader("Session Risk Summary")
-
-if st.session_state.total_cases > 0:
-
-    total = st.session_state.total_cases
-    risks = len(st.session_state.risk_log)
-
-    st.write(f"Total cases reviewed: {total}")
-    st.write(f"Total documentation risks detected: {risks}")
-
-    counts = Counter(st.session_state.risk_log)
-
-    st.write("Top recurring gaps:")
-    for k, v in counts.items():
-        st.write(f"{k} : {v}")
+        except Exception as e:
+            st.error("AI generation error:")
+            st.code(str(e))
