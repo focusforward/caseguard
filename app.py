@@ -180,21 +180,16 @@ with col2:
 if st.session_state.result:
 
     data = st.session_state.result
-
-    st.subheader(f"Risk Level: {data.get('classification','')}")
-
-    # -------- GUIDANCE --------
+    risk = data.get("classification","")
     guidance = data.get("suggested_documentation","").strip()
+    final_note = data.get("defensible_note","")
 
-    if guidance:
-        risk = data.get("classification","")
-guidance = data.get("suggested_documentation","").strip()
+    st.subheader(f"Risk Level: {risk}")
 
-if risk != "SAFE" and guidance:
-    st.write("### Suggested Documentation Improvements")
-    st.text_area("Guidance", guidance, height=130)
-elif risk == "SAFE":
-    st.success("No additional documentation improvement needed")
+    # Show guidance only if not SAFE
+    if risk != "SAFE" and guidance:
+        st.write("### Suggested Documentation Improvements")
+        st.text_area("Guidance", guidance, height=130)
 
         components.html(f"""
             <textarea id="guidecopy" style="width:100%;height:60px;">{guidance}</textarea>
@@ -208,12 +203,10 @@ elif risk == "SAFE":
             </script>
         """, height=120)
 
-    else:
+    elif risk == "SAFE":
         st.success("No additional documentation improvement needed")
 
-    # -------- FINAL NOTE --------
-    final_note = data.get("defensible_note","")
-
+    # Final note
     st.write("### Defensible Chart Version (Ready to Paste)")
     st.text_area("Final Note", final_note, height=180)
 
