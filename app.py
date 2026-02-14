@@ -119,7 +119,8 @@ with col1:
                         {"role": "user", "content": note}
                     ],
                     temperature=0
-                )
+                 response_format={"type": "json_object"}
+  )
 
                 raw = response.choices[0].message.content
                 st.session_state.result = json.loads(raw)
