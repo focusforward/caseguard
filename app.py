@@ -118,6 +118,16 @@ Reserve "stable for discharge" only for acute emergency presentations.
 -For outpatient or clinic encounters, still produce a finished chart entry.
 -Never output documentation instructions such as "document", "note", or "include".
 -Always rewrite the note directly using appropriate clinic wording.
+When clinical details are minimal, use neutral phrasing rather than instructions.
+
+Allowed neutral wording examples:
+- "evaluated and treated symptomatically"
+- "treatment started as above"
+- "advised follow-up if symptoms persist or worsen"
+
+These phrases are preferred instead of asking the user to document more information.
+Never switch to giving documentation advice.
+
 
 
 
