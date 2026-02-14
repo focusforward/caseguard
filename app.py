@@ -105,6 +105,17 @@ Rules:
 -Do NOT switch to giving instructions — always produce a finished note.
 -Prefer extending the original sentence instead of rewriting from scratch whenever possible.
 -Avoid repeating words or phrases from the original note unnecessarily and produce only one final version of the note.
+-Encounter context wording:
+If the note describes an outpatient clinic or non-emergency visit (routine exam, chronic symptoms, refraction, irritation, follow-up),
+avoid emergency terms such as "stable for discharge" or "discharged".
+
+Use neutral outpatient language instead:
+- "advised follow-up"
+- "review if symptoms worsen"
+- "continue treatment as prescribed"
+
+Reserve "stable for discharge" only for acute emergency presentations.
+
 
 
 
