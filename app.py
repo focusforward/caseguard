@@ -40,6 +40,18 @@ OUTPUT:
 }
 
 INPUT:
+32F RLQ pain CBC normal CT negative appendicitis discharged analgesics
+
+OUTPUT:
+{
+ "classification": "SAFE",
+ "missing_anchors": [],
+ "reasoning": "Definitive imaging ruled out acute surgical pathology.",
+ "suggested_documentation": "Optional brief clinical context if assessed.",
+ "defensible_note": "32-year-old female with right lower quadrant pain. CBC normal. CT abdomen/pelvis negative for appendicitis. Discharged with analgesics and advised return if worsening pain, fever, or new symptoms."
+}
+
+INPUT:
 35 yr backache after long sitting painkiller given review
 
 OUTPUT:
