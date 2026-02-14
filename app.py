@@ -115,6 +115,10 @@ Use neutral outpatient language instead:
 - "continue treatment as prescribed"
 
 Reserve "stable for discharge" only for acute emergency presentations.
+-For outpatient or clinic encounters, still produce a finished chart entry.
+-Never output documentation instructions such as "document", "note", or "include".
+-Always rewrite the note directly using appropriate clinic wording.
+
 
 
 
