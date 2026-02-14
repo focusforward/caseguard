@@ -82,7 +82,8 @@ Keep reasoning calm, brief, and practical.
  "classification": "",
  "missing_anchors": [],
  "reasoning": "",
- "suggested_documentation": ""
+ "suggested_documentation": "",
+ "defensible_note": ""
 }
 """
 
