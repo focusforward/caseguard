@@ -40,6 +40,18 @@ OUTPUT:
 }
 
 INPUT:
+35 yr backache after long sitting painkiller given review
+
+OUTPUT:
+{
+ "classification": "SAFE",
+ "missing_anchors": [],
+ "reasoning": "Likely mechanical musculoskeletal pain.",
+ "suggested_documentation": "Briefly mention absence of concerning features if assessed.",
+ "defensible_note": "35-year-old with back pain after prolonged sitting. Analgesic given. Advised review in 2 weeks or earlier if worsening or neurological symptoms develop."
+}
+
+INPUT:
 4 yr fever playful eating well pcm discharge
 OUTPUT:
 {
