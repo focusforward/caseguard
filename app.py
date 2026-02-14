@@ -127,6 +127,14 @@ Allowed neutral wording examples:
 
 These phrases are preferred instead of asking the user to document more information.
 Never switch to giving documentation advice.
+If the original note contains very limited clinical information,
+produce a minimal defensible note using only the stated facts.
+Do not request more details.
+Do not switch to advice mode.
+
+Example acceptable minimal output:
+"Right eye irritation for 1 day in contact lens user. Treatment started as above. Advised review if symptoms persist or worsen."
+
 
 
 
