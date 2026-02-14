@@ -91,6 +91,8 @@ Rules:
 - Keep it concise (2–4 lines maximum)
 -Never invent examination findings, vitals, or investigations that were not stated or clearly implied in the original note.
 -If information is absent, phrase it neutrally (e.g., "no concerning features reported") rather than creating new clinical data.
+-Preserve the original sentence structure when possible and only expand weak parts instead of completely rewriting the style.
+
 
 
 {
