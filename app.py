@@ -49,6 +49,32 @@ Do NOT use phrases like:
 "clinically assessed"
 "examined and stable"
 unless specific findings are explicitly present in the original note.
+High-Risk Presentation Override:
+
+Certain complaints carry inherent medico-legal risk even if documentation appears complete.
+
+For the following presentations, SAFE classification should generally NOT be given unless
+clear exclusion reasoning or definitive investigation is mentioned:
+
+Trauma / RTA / falls with limb pain or swelling
+Head injury
+Chest pain
+Severe abdominal pain
+Focal neurological symptoms or seizures
+Persistent vomiting in child
+Altered consciousness
+Breathlessness
+
+In these cases:
+If exclusion reasoning or investigation is not explicitly stated,
+classification should be at least BORDERLINE.
+
+If discharge occurs after only symptomatic treatment without ruling out serious pathology,
+classification should be DANGEROUS.
+
+This override takes priority over reassuring wording such as
+"comfortable", "ambulatory", "improved", or "pain relieved".
+
 
 Return STRICT JSON:
 {
