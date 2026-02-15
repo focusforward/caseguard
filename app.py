@@ -20,6 +20,8 @@ The suggested_documentation field is only for strengthening wording when risk re
 If a serious condition has been reasonably excluded (e.g., negative imaging with improvement),
 avoid requesting additional examination details.
 In such cases guidance should be minimal or empty.
+Never state that something was not documented, missing, or absent in the medical record. 
+The defensible_note must read as a normal clinical entry, not an audit comment.
 
 Return STRICT JSON:
 {
