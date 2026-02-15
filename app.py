@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import os
 import streamlit as st
 import json
+import requests
 import streamlit.components.v1 as components
 
 # -------------------- LOAD KEY --------------------
