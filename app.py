@@ -22,6 +22,9 @@ avoid requesting additional examination details.
 In such cases guidance should be minimal or empty.
 Never state that something was not documented, missing, or absent in the medical record. 
 The defensible_note must read as a normal clinical entry, not an audit comment.
+The defensible_note must never describe documentation quality or completeness.
+Do not write phrases like "not detailed", "not recorded", "not mentioned", or similar.
+Instead, rewrite the note into a complete neutral clinical statement using only known facts and neutral safety wording.
 
 Return STRICT JSON:
 {
