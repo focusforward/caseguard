@@ -5,6 +5,31 @@ import streamlit as st
 import json
 import requests
 import streamlit.components.v1 as components
+# -------------------- RISK RULE ENGINE --------------------
+def rule_classify(note: str):
+    text = note.lower()
+
+    high_risk_keywords = [
+        "rta","accident","fall","injury","hit","trauma",
+        "chest pain","seizure","unconscious","syncope",
+        "severe abdominal","abd pain","breathless","sob",
+        "head injury","vomiting repeatedly"
+    ]
+
+    investigation_keywords = [
+        "xray","ct","mri","scan","ecg","troponin","usg","ultrasound"
+    ]
+
+    high_risk = any(k in text for k in high_risk_keywords)
+    investigated = any(k in text for k in investigation_keywords)
+
+    if high_risk and not investigated:
+        return "DANGEROUS"
+
+    if high_risk and investigated:
+        return "BORDERLINE"
+
+    return None
 
 # -------------------- LOAD KEY --------------------
 load_dotenv()
@@ -256,6 +281,7 @@ with col1:
             st.warning("Please paste a case note")
         else:
             try:
+                forced_class = rule_classify(note)
                 response = client.chat.completions.create(
                     model="gpt-4.1-mini",
                     messages=[
@@ -268,6 +294,8 @@ with col1:
 
                 raw = response.choices[0].message.content
                 st.session_state.result = json.loads(raw)
+                if forced_class:
+                    st.session_state.result["classification"] = forced_class
                 st.session_state.total_cases += 1
 
                 # ---- GOOGLE USAGE TRACKING ----
