@@ -25,6 +25,29 @@ The defensible_note must read as a normal clinical entry, not an audit comment.
 The defensible_note must never describe documentation quality or completeness.
 Do not write phrases like "not detailed", "not recorded", "not mentioned", or similar.
 Instead, rewrite the note into a complete neutral clinical statement using only known facts and neutral safety wording.
+Defensible note writing style (mandatory pattern):
+
+Whenever possible, structure the final note in this order:
+
+1. Patient + complaint
+2. Treatment given
+3. Patient condition after treatment (observable state)
+4. Clear return precautions
+
+Prefer outcome-based wording:
+Use phrases like:
+"symptomatically improved"
+"comfortable after treatment"
+"tolerating orally"
+"no new complaints during observation"
+
+Avoid vague process claims:
+Do NOT use phrases like:
+"assessment done"
+"evaluated"
+"clinically assessed"
+"examined and stable"
+unless specific findings are explicitly present in the original note.
 
 Return STRICT JSON:
 {
