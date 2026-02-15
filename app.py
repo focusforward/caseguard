@@ -198,7 +198,6 @@ st.title("CaseGuard")
 st.caption("Medico-legal documentation assistant for everyday clinical practice.")
 st.info(f"Cases reviewed this session: {st.session_state.total_cases}")
 
-# initialize once
 if "note_value" not in st.session_state:
     st.session_state.note_value = ""
 
@@ -220,13 +219,25 @@ with col1:
                         {"role": "user", "content": note}
                     ],
                     temperature=0,
-                 response_format={"type": "json_object"}
-  )
+                    response_format={"type": "json_object"}
+                )
 
                 raw = response.choices[0].message.content
                 st.session_state.result = json.loads(raw)
-               requests.post("PASTE_YOUR_SCRIPT_URL_HERE", json={"risk": st.session_state.result.get("classification",""), "length": len(note)}, timeout=2)
                 st.session_state.total_cases += 1
+
+                # ---- GOOGLE USAGE TRACKING ----
+                try:
+                    requests.post(
+                        "PASTE_YOUR_SCRIPT_URL_HERE",
+                        json={
+                            "risk": st.session_state.result.get("classification",""),
+                            "length": len(note)
+                        },
+                        timeout=2
+                    )
+                except:
+                    pass
 
             except Exception as e:
                 st.error("AI generation error:")
@@ -248,7 +259,6 @@ if st.session_state.result:
 
     st.subheader(f"Risk Level: {risk}")
 
-    # Show guidance only if not SAFE
     if risk != "SAFE" and guidance:
         st.write("### Suggested Documentation Improvements")
         st.text_area("Guidance", guidance, height=130)
@@ -268,7 +278,6 @@ if st.session_state.result:
     elif risk == "SAFE":
         st.success("No additional documentation improvement needed")
 
-    # Final note
     st.write("### Defensible Chart Version (Ready to Paste)")
     st.text_area("Final Note", final_note, height=180)
 
@@ -283,3 +292,4 @@ if st.session_state.result:
         }}
         </script>
     """, height=140)
+
