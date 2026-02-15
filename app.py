@@ -325,13 +325,20 @@ with col2:
 # -------------------- DISPLAY --------------------
 if st.session_state.result:
 
-    data = st.session_state.result
+    data = dict(st.session_state.result)  # make a copy
+
+    # Final authority: rule engine overrides AI classification
+    forced_class = rule_classify(note)
+    if forced_class:
+        data["classification"] = forced_class
+
     risk = data.get("classification","")
     guidance = data.get("suggested_documentation","").strip()
     final_note = data.get("defensible_note","")
 
     st.subheader(f"Risk Level: {risk}")
 
+    # Guidance
     if risk != "SAFE" and guidance:
         st.write("### Suggested Documentation Improvements")
         st.text_area("Guidance", guidance, height=130)
@@ -351,6 +358,7 @@ if st.session_state.result:
     elif risk == "SAFE":
         st.success("No additional documentation improvement needed")
 
+    # Final Note
     st.write("### Defensible Chart Version (Ready to Paste)")
     st.text_area("Final Note", final_note, height=180)
 
@@ -365,4 +373,3 @@ if st.session_state.result:
         }}
         </script>
     """, height=140)
-
