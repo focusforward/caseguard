@@ -225,6 +225,17 @@ with col1:
 
                 raw = response.choices[0].message.content
                 st.session_state.result = json.loads(raw)
+                try:
+                    requests.post(
+                       "PASTE_YOUR_SCRIPT_URL_HERE",
+                        json={
+                            "risk": st.session_state.result.get("classification",""),
+                            "length": len(note)
+        },
+        timeout=2
+    )
+except:
+    pass
                 st.session_state.total_cases += 1
 
             except Exception as e:
