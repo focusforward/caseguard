@@ -229,7 +229,7 @@ with col1:
                 # ---- GOOGLE USAGE TRACKING ----
                 try:
                     requests.post(
-                        "https://script.google.com/macros/s/AKfycbwnJFGdOsbOQhKF7DVCF5BlPcUUaww8extX0tt-XGo63_PYxd9Zrqc2kmQI2jUSBjxG/exec",
+                        "https://script.google.com/macros/s/AKfycbxj3IVtwoDowJsyj7v7AAikZyquduybRFbil6xOJsv709bF5SfyYuenb3OrNyhrdtha/exec",
                         json={
                             "risk": st.session_state.result.get("classification",""),
                             "length": len(note)
