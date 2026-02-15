@@ -67,14 +67,9 @@ Breathlessness
 
 In these cases:
 If exclusion reasoning or investigation is not explicitly stated,
-classification should be at least BORDERLINE.
-
-If discharge occurs after only symptomatic treatment without ruling out serious pathology,
-classification should be DANGEROUS.
-
-This override takes priority over reassuring wording such as
-"comfortable", "ambulatory", "improved", or "pain relieved".
-
+classification must be DANGEROUS when discharge occurs after only symptomatic treatment
+and no exclusion of serious injury is documented.
+BORDERLINE should only be used when partial evaluation is mentioned but not clearly adequate.
 
 Return STRICT JSON:
 {
