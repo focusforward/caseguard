@@ -82,6 +82,17 @@ If exclusion reasoning or investigation is not explicitly stated,
 classification must be DANGEROUS when discharge occurs after only symptomatic treatment
 and no exclusion of serious injury is documented.
 BORDERLINE should only be used when partial evaluation is mentioned but not clearly adequate.
+Classification independence rule:
+
+The risk classification must be determined using strict medico-legal reasoning
+and must ignore tone guidance.
+
+Tone rules apply only to the wording of reasoning and suggested_documentation,
+not to the classification decision.
+
+If a high-risk condition is not reasonably excluded, classification must be DANGEROUS
+even if the explanation remains gentle and non-accusatory.
+
 
 Return STRICT JSON:
 {
