@@ -282,7 +282,8 @@ with col1:
         else:
             try:
                 forced_class = rule_classify(note)
-                
+                status = st.status("Analyzing medico-legal risk...", expanded=False)
+
                 response = client.chat.completions.create(
                     model="gpt-4.1-mini",
                     messages=[
@@ -294,6 +295,8 @@ with col1:
                 )
 
                 raw = response.choices[0].message.content
+                status.update(label="Analysis complete", state="complete")
+
                 st.session_state.result = json.loads(raw)
                 if forced_class:
                     st.session_state.result["classification"] = forced_class
