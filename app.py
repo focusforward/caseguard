@@ -282,6 +282,7 @@ with col1:
         else:
             try:
                 forced_class = rule_classify(note)
+                st.write("Rule engine says:", forced_class)
                 response = client.chat.completions.create(
                     model="gpt-4.1-mini",
                     messages=[
