@@ -1,3 +1,5 @@
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -10,6 +12,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="."), name="static")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -366,5 +369,9 @@ def analyze_case(data: CaseInput):
         result["classification"] = forced_class
 
     return result
+    @app.get("/")
+    def homepage():
+    return FileResponse("index.html")
+
 
 

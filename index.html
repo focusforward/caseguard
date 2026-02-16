@@ -43,7 +43,7 @@ async function analyze() {
     const email = document.getElementById("email").value;
     const note = document.getElementById("note").value;
 
-    const res = await fetch("http://127.0.0.1:8000/analyze", {
+    const res = await fetch("/analyze", {
         method: "POST",
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify({email:email, note:note})
