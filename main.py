@@ -369,9 +369,10 @@ def analyze_case(data: CaseInput):
         result["classification"] = forced_class
 
     return result
+    import os
     @app.get("/")
     def homepage():
-    return FileResponse("index.html")
+        return FileResponse(os.path.join(os.path.dirname(__file__), "index.html"))
 
 
 
