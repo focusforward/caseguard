@@ -5,29 +5,47 @@ import streamlit as st
 import json
 import requests
 import streamlit.components.v1 as components
-# -------------------- RISK RULE ENGINE --------------------
+# -------------------- RISK RULE ENGINE (CONTEXT AWARE) --------------------
 def rule_classify(note: str):
     text = note.lower()
 
-    high_risk_keywords = [
-        "rta","accident","fall","injury","hit","trauma",
-        "chest pain","seizure","unconscious","syncope",
-        "severe abdominal","abd pain","breathless","sob",
-        "head injury","vomiting repeatedly"
-    ]
+    # ---- GROUPS ----
+    trauma = any(k in text for k in ["rta","accident","fall","injury","hit","trauma","swelling","deformity"])
+    head = "head injury" in text or "head trauma" in text
+    chest = "chest pain" in text
+    abdomen = any(k in text for k in ["abd pain","abdominal pain","severe abdomen"])
+    neuro = any(k in text for k in ["seizure","unconscious","syncope","weakness","slurring"])
+    breathing = any(k in text for k in ["breathless","sob","respiratory distress"])
 
-    investigation_keywords = [
-        "xray","ct","mri","scan","ecg","troponin","usg","ultrasound"
-    ]
-
-    high_risk = any(k in text for k in high_risk_keywords)
-    investigated = any(k in text for k in investigation_keywords)
-
-    if high_risk and not investigated:
+    # ---- RELEVANT INVESTIGATIONS ----
+    xray_ct = any(k in text for k in ["xray","ct","scan","mri"])
+    cardiac_tests = any(k in text for k in ["ecg","troponin"])
+    abdomen_scan = any(k in text for k in ["usg","ultrasound","ct abdomen"])
+    
+    # ---- RULES ----
+    # Trauma / fracture risk
+    if trauma and not xray_ct:
         return "DANGEROUS"
 
-    if high_risk and investigated:
-        return "BORDERLINE"
+    # Head injury requires CT reasoning
+    if head and not xray_ct:
+        return "DANGEROUS"
+
+    # Chest pain requires cardiac evaluation
+    if chest and not cardiac_tests:
+        return "DANGEROUS"
+
+    # Abdomen severe pain requires imaging
+    if abdomen and not abdomen_scan:
+        return "DANGEROUS"
+
+    # Neurological events
+    if neuro and not xray_ct:
+        return "DANGEROUS"
+
+    # Breathing distress
+    if breathing and not any(k in text for k in ["neb","oxygen","spo2","saturation"]):
+        return "DANGEROUS"
 
     return None
 
