@@ -1,3 +1,4 @@
+from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI
@@ -370,9 +371,10 @@ def analyze_case(data: CaseInput):
 
     return result
     import os
-    @app.get("/")
-    def homepage():
-        return FileResponse(os.path.join(os.path.dirname(__file__), "index.html"))
+    # serve frontend
+    app.mount("/", StaticFiles(directory=".", html=True), name="frontend")
+
+
 
 
 
