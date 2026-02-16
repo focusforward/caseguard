@@ -318,6 +318,44 @@ if "total_cases" not in st.session_state:
 
 # -------------------- UI --------------------
 st.set_page_config(page_title="CaseGuard")
+# -------------------- LOGIN GATE --------------------
+import requests
+from datetime import datetime
+
+SHEET_URL = "https://opensheet.elk.sh/1NA4S23i9t_q9D40EaedCvuuoN2EJdnGpDbtQnhM86_M/Sheet1"
+
+def check_access(email):
+    try:
+        users = requests.get(SHEET_URL, timeout=5).json()
+        for u in users:
+            if u["email"].strip().lower() == email.strip().lower():
+                expiry = datetime.strptime(u["expiry"], "%d-%m-%Y")
+                if expiry >= datetime.today():
+                    return True
+        return False
+    except:
+        return False
+
+# session login state
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+if not st.session_state.logged_in:
+
+    st.title("CaseGuard Access")
+
+    email_input = st.text_input("Enter your registered email")
+
+    if st.button("Login"):
+        if check_access(email_input):
+            st.session_state.logged_in = True
+            st.success("Access granted")
+            st.rerun()
+        else:
+            st.error("No active subscription")
+
+    st.stop()
+
 st.title("CaseGuard")
 st.caption("Medico-legal documentation assistant for everyday clinical practice.")
 st.info(f"Cases reviewed this session: {st.session_state.total_cases}")
