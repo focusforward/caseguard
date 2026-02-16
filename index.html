@@ -2,25 +2,82 @@
 <html>
 <head>
     <title>CaseGuard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <style>
-        body { font-family: Arial; max-width: 700px; margin: 40px auto; }
-        textarea { width:100%; height:160px; margin-top:10px; }
-        button { margin-top:10px; padding:10px 16px; font-size:15px; }
-        .box { margin-top:20px; padding:15px; border:1px solid #ccc; border-radius:8px; }
-        .risk { font-size:22px; font-weight:bold; }
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 700px;
+        margin: auto;
+        padding: 14px;
+        background: #f7f7f7;
+    }
+
+    h2 {
+        text-align: center;
+    }
+
+    label {
+        font-weight: bold;
+        margin-top: 12px;
+        display: block;
+    }
+
+    input, textarea {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px;
+        margin-top: 8px;
+        font-size: 16px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+    textarea {
+        min-height: 140px;
+    }
+
+    button {
+        width: 100%;
+        padding: 14px;
+        margin-top: 12px;
+        font-size: 17px;
+        border: none;
+        border-radius: 10px;
+        background: #0d6efd;
+        color: white;
+        cursor: pointer;
+    }
+
+    button:active {
+        transform: scale(0.98);
+    }
+
+    .box {
+        margin-top: 18px;
+        padding: 14px;
+        border-radius: 12px;
+        background: white;
+    }
+
+    .risk {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
     </style>
 </head>
+
 <body>
 
 <h2>CaseGuard</h2>
 
 <label>Email</label>
-<input id="email" style="width:100%;padding:8px">
+<input id="email">
 
 <label>Paste Case Note</label>
 <textarea id="note"></textarea>
 
-<br>
 <button onclick="analyze()">Review Documentation</button>
 <button onclick="clearAll()">Clear</button>
 
@@ -32,7 +89,7 @@
 
     <h3>Defensible Chart Note</h3>
     <textarea id="finalnote"></textarea>
-    <br>
+
     <button onclick="copyNote()">Copy Note</button>
 </div>
 
@@ -61,25 +118,4 @@ async function analyze() {
         document.getElementById("guidance").value = data.suggested_documentation;
     } else {
         document.getElementById("guideTitle").style.display="none";
-        document.getElementById("guidance").style.display="none";
-    }
-}
-
-function copyNote() {
-    const text = document.getElementById("finalnote");
-    text.select();
-    document.execCommand("copy");
-}
-
-function clearAll() {
-    document.getElementById("note").value="";
-    document.getElementById("finalnote").value="";
-    document.getElementById("guidance").value="";
-    document.getElementById("output").style.display="none";
-}
-
-</script>
-
-</body>
-</html>
-
+        document.getElementById("guidance").s
