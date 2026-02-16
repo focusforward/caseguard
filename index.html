@@ -78,8 +78,8 @@
 <label>Paste Case Note</label>
 <textarea id="note"></textarea>
 
-<button onclick="analyze()">Review Documentation</button>
-<button onclick="clearAll()">Clear</button>
+<button id="reviewBtn">Review Documentation</button>
+<button id="clearBtn">Clear</button>
 
 <div id="output" class="box" style="display:none">
     <div class="risk" id="risk"></div>
@@ -90,7 +90,7 @@
     <h3>Defensible Chart Note</h3>
     <textarea id="finalnote"></textarea>
 
-    <button onclick="copyNote()">Copy Note</button>
+    <button id="copyBtn">Copy Note</button>
 </div>
 
 <script>
@@ -108,6 +108,11 @@ async function analyze() {
 
     const data = await res.json();
 
+    if(data.error){
+        alert(data.error);
+        return;
+    }
+
     document.getElementById("output").style.display="block";
     document.getElementById("risk").innerText = "Risk Level: " + data.classification;
     document.getElementById("finalnote").value = data.defensible_note;
@@ -118,4 +123,28 @@ async function analyze() {
         document.getElementById("guidance").value = data.suggested_documentation;
     } else {
         document.getElementById("guideTitle").style.display="none";
-        document.getElementById("guidance").s
+        document.getElementById("guidance").style.display="none";
+    }
+}
+
+function copyNote() {
+    const text = document.getElementById("finalnote");
+    text.select();
+    document.execCommand("copy");
+}
+
+function clearAll() {
+    document.getElementById("note").value="";
+    document.getElementById("finalnote").value="";
+    document.getElementById("guidance").value="";
+    document.getElementById("output").style.display="none";
+}
+
+document.getElementById("reviewBtn").addEventListener("click", analyze);
+document.getElementById("clearBtn").addEventListener("click", clearAll);
+document.getElementById("copyBtn").addEventListener("click", copyNote);
+
+</script>
+
+</body>
+</html>
