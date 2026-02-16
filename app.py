@@ -79,6 +79,9 @@ def rule_classify(note: str):
         # neurological event discharged
         if neuro and not imaging:
             return "DANGEROUS"
+        # hemodynamic instability
+        if re.search(r'\b(bp\s*9\d\/\d\d|bp\s*8\d\/\d\d|hypotension|shock)\b', text):
+            return "DANGEROUS"
 
     return None
 
