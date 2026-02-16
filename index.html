@@ -43,7 +43,7 @@ async function analyze() {
     const email = document.getElementById("email").value;
     const note = document.getElementById("note").value;
 
-    const res = await fetch("/analyze", {
+    const res = await fetch("https://caseguard.onrender.com/analyze", {
         method: "POST",
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify({email:email, note:note})
@@ -82,3 +82,4 @@ function clearAll() {
 
 </body>
 </html>
+
