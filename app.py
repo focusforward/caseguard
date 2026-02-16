@@ -5,49 +5,74 @@ import streamlit as st
 import json
 import requests
 import streamlit.components.v1 as components
-# -------------------- RISK RULE ENGINE (CONTEXT AWARE) --------------------
+# -------------------- RISK RULE ENGINE (DISPOSITION AWARE) --------------------
 def rule_classify(note: str):
     text = note.lower()
 
-    # ---- GROUPS ----
-    trauma = any(k in text for k in ["rta","accident","fall","injury","hit","trauma","swelling","deformity"])
-    head = "head injury" in text or "head trauma" in text
-    chest = "chest pain" in text
-    abdomen = any(k in text for k in ["abd pain","abdominal pain","severe abdomen"])
-    neuro = any(k in text for k in ["seizure","unconscious","syncope","weakness","slurring"])
-    breathing = any(k in text for k in ["breathless","sob","respiratory distress"])
+    # -------- DISPOSITION --------
+    admitted = any(k in text for k in [
+        "admit","admitted","icu","shifted","referred","transferred","ot","ward"
+    ])
+    discharged = any(k in text for k in [
+        "discharged","sent home","home","opd","review"
+    ])
 
-    # ---- RELEVANT INVESTIGATIONS ----
-    xray_ct = any(k in text for k in ["xray","ct","scan","mri"])
+    # -------- PRESENTATION GROUPS --------
+    trauma = any(k in text for k in ["rta","accident","fall","injury","trauma"])
+    head = "head injury" in text
+    chest = "chest pain" in text
+    abdomen = any(k in text for k in ["abd pain","abdominal pain","rlq pain"])
+    neuro = any(k in text for k in ["seizure","unconscious","syncope","weakness"])
+    hypoxia = any(k in text for k in ["spo2","saturation 8","saturation 7","86%","85%"])
+
+    # -------- INVESTIGATIONS --------
+    xray_ct = any(k in text for k in ["xray","ct","mri","scan"])
     cardiac_tests = any(k in text for k in ["ecg","troponin"])
     abdomen_scan = any(k in text for k in ["usg","ultrasound","ct abdomen"])
-    
-    # ---- RULES ----
-    # Trauma / fracture risk
-    if trauma and not xray_ct:
-        return "DANGEROUS"
 
-    # Head injury requires CT reasoning
-    if head and not xray_ct:
-        return "DANGEROUS"
+    # =========================================================
+    #                 DISPOSITION DECISION LOGIC
+    # =========================================================
 
-    # Chest pain requires cardiac evaluation
-    if chest and not cardiac_tests:
-        return "DANGEROUS"
+    # ---------- ADMITTED CASES ----------
+    if admitted:
 
-    # Abdomen severe pain requires imaging
-    if abdomen and not abdomen_scan:
-        return "DANGEROUS"
+        # missed immediate critical step → BORDERLINE
+        if chest and not cardiac_tests:
+            return "BORDERLINE"
 
-    # Neurological events
-    if neuro and not xray_ct:
-        return "DANGEROUS"
+        if head and not xray_ct:
+            return "BORDERLINE"
 
-    # Breathing distress
-    if breathing and not any(k in text for k in ["neb","oxygen","spo2","saturation"]):
-        return "DANGEROUS"
+        if abdomen and not abdomen_scan:
+            return "BORDERLINE"
+
+        # otherwise escalation protects doctor
+        return "SAFE"
+
+    # ---------- DISCHARGED CASES ----------
+    if discharged:
+
+        if trauma and not xray_ct:
+            return "DANGEROUS"
+
+        if head and not xray_ct:
+            return "DANGEROUS"
+
+        if chest and not cardiac_tests:
+            return "DANGEROUS"
+
+        if abdomen and not abdomen_scan:
+            return "DANGEROUS"
+
+        if neuro and not xray_ct:
+            return "DANGEROUS"
+
+        if hypoxia:
+            return "DANGEROUS"
 
     return None
+
 
 # -------------------- LOAD KEY --------------------
 load_dotenv()
