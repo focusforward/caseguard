@@ -1,3 +1,4 @@
+from pathlib import Path
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -372,7 +373,11 @@ def analyze_case(data: CaseInput):
     return result
     import os
     # serve frontend
-    app.mount("/", StaticFiles(directory=".", html=True), name="frontend")
+    # serve frontend from the same folder as this file
+    BASE_DIR = Path(__file__).resolve().parent
+    app.mount("/", StaticFiles(directory=BASE_DIR, html=True), name="frontend")
+
+
 
 
 
