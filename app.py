@@ -5,70 +5,79 @@ import streamlit as st
 import json
 import requests
 import streamlit.components.v1 as components
-# -------------------- RISK RULE ENGINE (DISPOSITION AWARE) --------------------
+# -------------------- CASEGUARD RISK ENGINE v1 --------------------
+import re
+
 def rule_classify(note: str):
     text = note.lower()
 
-    # -------- DISPOSITION --------
-    admitted = any(k in text for k in [
-        "admit","admitted","icu","shifted","referred","transferred","ot","ward"
-    ])
-    discharged = any(k in text for k in [
-        "discharged","sent home","home","opd","review"
-    ])
+    # ---------------- DISPOSITION ----------------
+    admitted = bool(re.search(r'\b(admit|admitted|icu|shifted|referred|transferred|ward|ot)\b', text))
+    discharged = bool(re.search(r'\b(discharge|discharged|home|opd|review|sent home)\b', text))
 
-    # -------- PRESENTATION GROUPS --------
-    trauma = any(k in text for k in ["rta","accident","fall","injury","trauma"])
+    # ---------------- PRESENTATION GROUPS ----------------
+    trauma = any(k in text for k in ["rta","accident","fall","trauma","assault","hit"])
+    high_energy = any(k in text for k in ["fall from height","10ft","high speed","railway","ejection","run over"])
     head = "head injury" in text
-    chest = "chest pain" in text
-    abdomen = any(k in text for k in ["abd pain","abdominal pain","rlq pain"])
-    neuro = any(k in text for k in ["seizure","unconscious","syncope","weakness"])
-    hypoxia = any(k in text for k in ["spo2","saturation 8","saturation 7","86%","85%"])
+    chest = "chest pain" in text or "jaw pain" in text
+    abdomen = any(k in text for k in ["abd pain","abdominal pain","rlq pain","guarding"])
+    neuro = any(k in text for k in ["seizure","unconscious","syncope","weakness","slurring"])
+    hypoxia = bool(re.search(r'\b(8[0-9]%|spo2 8|saturation 8)\b', text))
+    tachy = bool(re.search(r'\b(pulse 1[3-9][0-9]|hr 1[3-9][0-9]|140 bpm)\b', text))
 
-    # -------- INVESTIGATIONS --------
-    xray_ct = any(k in text for k in ["xray","ct","mri","scan"])
+    # ---------------- INVESTIGATIONS ----------------
+    imaging = any(k in text for k in ["xray","ct","mri","scan"])
     cardiac_tests = any(k in text for k in ["ecg","troponin"])
     abdomen_scan = any(k in text for k in ["usg","ultrasound","ct abdomen"])
 
-    # =========================================================
-    #                 DISPOSITION DECISION LOGIC
-    # =========================================================
-
-    # ---------- ADMITTED CASES ----------
+    # =====================================================
+    # ADMITTED PATIENTS (ESCALATION PROTECTS DOCTOR)
+    # =====================================================
     if admitted:
 
-        # missed immediate critical step → BORDERLINE
+        # missed mandatory immediate step → borderline
         if chest and not cardiac_tests:
             return "BORDERLINE"
 
-        if head and not xray_ct:
+        if head and not imaging:
             return "BORDERLINE"
 
         if abdomen and not abdomen_scan:
             return "BORDERLINE"
 
-        # otherwise escalation protects doctor
         return "SAFE"
 
-    # ---------- DISCHARGED CASES ----------
+    # =====================================================
+    # DISCHARGED PATIENTS (HIGH RISK ZONE)
+    # =====================================================
     if discharged:
 
-        if trauma and not xray_ct:
+        # life threatening physiology
+        if hypoxia or tachy:
             return "DANGEROUS"
 
-        if head and not xray_ct:
+        # high energy trauma always dangerous if discharged
+        if high_energy:
             return "DANGEROUS"
 
+        # trauma without imaging
+        if trauma and not imaging:
+            return "DANGEROUS"
+
+        # head injury
+        if head and not imaging:
+            return "DANGEROUS"
+
+        # chest pain without cardiac rule-out
         if chest and not cardiac_tests:
             return "DANGEROUS"
 
+        # abdomen red flags without scan
         if abdomen and not abdomen_scan:
             return "DANGEROUS"
 
-        if neuro and not xray_ct:
-            return "DANGEROUS"
-
-        if hypoxia:
+        # neurological event discharged
+        if neuro and not imaging:
             return "DANGEROUS"
 
     return None
