@@ -339,6 +339,8 @@ def check_access(email):
 # session login state
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
+if "user_email" not in st.session_state:
+    st.session_state.user_email = ""
 
 if not st.session_state.logged_in:
 
@@ -349,6 +351,7 @@ if not st.session_state.logged_in:
     if st.button("Login"):
         if check_access(email_input):
             st.session_state.logged_in = True
+            st.session_state.user_email = email_input
             st.success("Access granted")
             st.rerun()
         else:
