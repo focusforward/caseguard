@@ -1,151 +1,154 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CaseGuard v2</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CaseGuard</title>
 
-    <style>
-    body {
-        font-family: Arial, sans-serif;
-        max-width: 700px;
-        margin: auto;
-        padding: 14px;
-        background: #f7f7f7;
-    }
+<style>
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background:#f5f6f8;
+    margin:0;
+    padding:0;
+}
 
-    h2 {
-        text-align: center;
-    }
+.container{
+    max-width:700px;
+    margin:auto;
+    padding:18px;
+}
 
-    label {
-        font-weight: bold;
-        margin-top: 12px;
-        display: block;
-    }
+.card{
+    background:white;
+    padding:18px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
 
-    input, textarea {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 12px;
-        margin-top: 8px;
-        font-size: 16px;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-    }
+textarea{
+    width:100%;
+    height:160px;
+    padding:10px;
+    font-size:15px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    resize:vertical;
+}
 
-    textarea {
-        min-height: 140px;
-    }
+button{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    font-size:16px;
+    border:none;
+    border-radius:8px;
+    background:#111;
+    color:white;
+    cursor:pointer;
+}
 
-    button {
-        width: 100%;
-        padding: 14px;
-        margin-top: 12px;
-        font-size: 17px;
-        border: none;
-        border-radius: 10px;
-        background: #0d6efd;
-        color: white;
-        cursor: pointer;
-    }
+button:hover{
+    background:#333;
+}
 
-    button:active {
-        transform: scale(0.98);
-    }
+.result{
+    margin-top:18px;
+    white-space:pre-wrap;
+}
 
-    .box {
-        margin-top: 18px;
-        padding: 14px;
-        border-radius: 12px;
-        background: white;
-    }
+.label{
+    font-weight:bold;
+    margin-top:10px;
+}
 
-    .risk {
-        font-size: 20px;
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
-    </style>
+.small{
+    color:#666;
+    font-size:14px;
+}
+
+/* spinner */
+.loader {
+  border: 4px solid #eee;
+  border-top: 4px solid #111;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  animation: spin 0.8s linear infinite;
+  margin: 18px auto;
+  display: none;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+</style>
 </head>
 
 <body>
 
-<h2>CaseGuard</h2>
+<div class="container">
 
-<label>Email</label>
-<input id="email">
+    <div style="text-align:center;margin-bottom:16px;">
+        <h1 style="margin:0;">CaseGuard™</h1>
+        <div class="small">Medical documentation assistant</div>
+    </div>
 
-<label>Paste Case Note</label>
-<textarea id="note"></textarea>
+    <div class="card">
 
-<button id="reviewBtn">Review Documentation</button>
-<button id="clearBtn">Clear</button>
+        <input id="email" placeholder="Registered email" style="width:100%;padding:10px;margin-bottom:10px;border-radius:8px;border:1px solid #ccc;">
 
-<div id="output" class="box" style="display:none">
-    <div class="risk" id="risk"></div>
+        <textarea id="note" placeholder="Paste case note here..."></textarea>
 
-    <h3 id="guideTitle" style="display:none">Suggested Documentation Improvements</h3>
-    <textarea id="guidance" style="display:none"></textarea>
+        <button onclick="analyze()">Review Documentation</button>
 
-    <h3>Defensible Chart Note</h3>
-    <textarea id="finalnote"></textarea>
+        <div id="loader" class="loader"></div>
 
-    <button id="copyBtn">Copy Note</button>
+        <div class="result" id="result"></div>
+
+    </div>
 </div>
 
 <script>
-
-async function analyze() {
+async function analyze(){
 
     const email = document.getElementById("email").value;
     const note = document.getElementById("note").value;
 
-    const res = await fetch("https://caseguard.onrender.com/analyze", {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({email:email, note:note})
-    });
-
-    const data = await res.json();
-
-    if(data.error){
-        alert(data.error);
+    if(!note){
+        alert("Paste a case note");
         return;
     }
 
-    document.getElementById("output").style.display="block";
-    document.getElementById("risk").innerText = "Risk Level: " + data.classification;
-    document.getElementById("finalnote").value = data.defensible_note;
+    document.getElementById("loader").style.display="block";
+    document.getElementById("result").innerHTML="";
 
-    if (data.classification !== "SAFE" && data.suggested_documentation) {
-        document.getElementById("guideTitle").style.display="block";
-        document.getElementById("guidance").style.display="block";
-        document.getElementById("guidance").value = data.suggested_documentation;
-    } else {
-        document.getElementById("guideTitle").style.display="none";
-        document.getElementById("guidance").style.display="none";
+    try{
+        const res = await fetch("https://caseguard.onrender.com/analyze",{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({email:email,note:note})
+        });
+
+        const data = await res.json();
+
+        if(data.error){
+            document.getElementById("result").innerHTML = "<b>"+data.error+"</b>";
+        }
+        else{
+            document.getElementById("result").innerHTML =
+            "<div class='label'>Risk Level</div>"+data.classification+
+            "<div class='label'>Suggested Documentation Improvements</div>"+(data.suggested_documentation||"None")+
+            "<div class='label'>Defensible Chart Version</div>"+data.defensible_note;
+        }
     }
+    catch(e){
+        document.getElementById("result").innerHTML="Server error";
+    }
+
+    document.getElementById("loader").style.display="none";
 }
-
-function copyNote() {
-    const text = document.getElementById("finalnote");
-    text.select();
-    document.execCommand("copy");
-}
-
-function clearAll() {
-    document.getElementById("note").value="";
-    document.getElementById("finalnote").value="";
-    document.getElementById("guidance").value="";
-    document.getElementById("output").style.display="none";
-}
-
-document.getElementById("reviewBtn").addEventListener("click", analyze);
-document.getElementById("clearBtn").addEventListener("click", clearAll);
-document.getElementById("copyBtn").addEventListener("click", copyNote);
-
 </script>
 
 </body>
 </html>
-
