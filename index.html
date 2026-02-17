@@ -122,6 +122,33 @@ body {
   margin: 0 auto 28px;
 }
 
+.btn-hero {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 28px;
+  background: var(--accent);
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 10px;
+  text-decoration: none;
+  margin-bottom: 28px;
+  transition: background 0.2s, transform 0.2s;
+  animation: nudge 2s ease-in-out infinite;
+}
+
+.btn-hero:hover {
+  background: var(--accent-dk);
+  transform: translateY(-1px);
+  animation: none;
+}
+
+@keyframes nudge {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(4px); }
+}
+
 /* ── TRUST PILLS ── */
 .trust-row {
   display: flex;
@@ -446,6 +473,86 @@ body {
   line-height: 1.5;
 }
 
+/* ── PRICING ── */
+.pricing {
+  max-width: 640px;
+  margin: 0 auto 28px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.price-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+}
+
+.price-card.popular {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.popular-tag {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.price-plan {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 10px;
+}
+
+.price-amount {
+  font-family: 'DM Serif Display', serif;
+  font-size: 32px;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.price-amount span {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+
+.price-period {
+  font-size: 12px;
+  color: var(--ink-faint);
+  margin-bottom: 14px;
+}
+
+.price-saving {
+  display: inline-block;
+  background: #f0fdf4;
+  color: var(--success);
+  border: 1px solid #bbf7d0;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
 /* ── FOOTER ── */
 .site-footer {
   text-align: center;
@@ -468,6 +575,7 @@ body {
 @media (max-width: 540px) {
   .hero h1 { font-size: 28px; }
   .how-it-works { grid-template-columns: 1fr; }
+  .pricing { grid-template-columns: 1fr; }
   .card { padding: 20px 16px; }
   .header-badge { display: none; }
 }
@@ -486,6 +594,10 @@ body {
   <div class="hero-eyebrow">AI-Powered Review</div>
   <h1>Catch documentation gaps before they become legal risks</h1>
   <p>Paste a clinical case note. CaseGuard™ analyzes it for missing information, medico-legal risk, and generates a defensible chart version instantly.</p>
+
+  <a href="#review-form" class="btn-hero">
+    Start Review &darr;
+  </a>
 
   <div class="trust-row">
     <div class="trust-pill">
@@ -526,8 +638,24 @@ body {
   </div>
 </div>
 
+<!-- PRICING -->
+<div class="pricing">
+  <div class="price-card">
+    <div class="price-plan">Monthly</div>
+    <div class="price-amount">₹3,000<span>/mo</span></div>
+    <div class="price-period">Billed monthly</div>
+  </div>
+  <div class="price-card popular">
+    <div class="popular-tag">Best Value</div>
+    <div class="price-plan">Annual</div>
+    <div class="price-amount">₹30,000<span>/yr</span></div>
+    <div class="price-period">₹2,500/month</div>
+    <div class="price-saving">Save ₹6,000/year</div>
+  </div>
+</div>
+
 <!-- MAIN CARD -->
-<div class="card">
+<div class="card" id="review-form">
 
   <div class="field">
     <label>Registered Email</label>
