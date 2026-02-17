@@ -1,7 +1,6 @@
 from pathlib import Path
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -22,6 +21,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# -------------------- HEALTH CHECK --------------------
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 # -------------------- LOAD KEY --------------------
 load_dotenv()
@@ -371,13 +375,6 @@ def analyze_case(data: CaseInput):
         result["classification"] = forced_class
 
     return result
-    import os
-    # serve frontend
-    # serve frontend from the same folder as this file
-    BASE_DIR = Path(__file__).resolve().parent
-    app.mount("/", StaticFiles(directory=BASE_DIR, html=True), name="frontend")
-
-
 
 
 
