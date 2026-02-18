@@ -11,8 +11,6 @@ import requests
 from datetime import datetime
 from dotenv import load_dotenv
 from openai import OpenAI
-import time
-from threading import Lock
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="."), name="static")
@@ -24,42 +22,32 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# -------------------- HEALTH CHECK --------------------
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
 # -------------------- LOAD KEY --------------------
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
-# -------------------- CACHED LOGIN CHECK --------------------
+# -------------------- LOGIN CHECK --------------------
 SHEET_URL = "https://docs.google.com/spreadsheets/d/1NA4S23i9t_q9D40EaedCvuuoN2EJdnGpDbtQnhM86_M/export?format=csv&gid=0"
 
-# Cache to avoid hitting Google Sheets every request
-_sheet_cache = {"data": None, "last_fetch": 0}
-_cache_lock = Lock()
-CACHE_DURATION = 300  # 5 minutes
 
 def check_access(email):
-    global _sheet_cache
-    with _cache_lock:
-        now = time.time()
-        # Refresh cache if it's stale or empty
-        if _sheet_cache["data"] is None or now - _sheet_cache["last_fetch"] > CACHE_DURATION:
-            try:
-                r = requests.get(SHEET_URL, timeout=5)
-                _sheet_cache["data"] = r.text.splitlines()[1:]  # skip header
-                _sheet_cache["last_fetch"] = now
-            except:
-                # If fetch fails and we have no cache, deny access
-                if _sheet_cache["data"] is None:
-                    return False
-        
-        # Check against cached data
-        for line in _sheet_cache["data"]:
+    try:
+        r = requests.get(SHEET_URL, timeout=5)
+        lines = r.text.splitlines()[1:]  # skip header
+
+        for line in lines:
             e, expiry = line.split(",")
             if e.strip().lower() == email.strip().lower():
                 expiry_date = datetime.strptime(expiry.strip(), "%d-%m-%Y")
                 if expiry_date >= datetime.today():
                     return True
-    return False
-
+        return False
+    except:
+        return False
 def rule_classify(note: str):
     text = note.lower()
 
@@ -136,7 +124,6 @@ def rule_classify(note: str):
             return "DANGEROUS"
 
     return None
-
 # -------------------- SYSTEM PROMPT --------------------
 system_prompt = """
 You are a clinical documentation assistant.
@@ -355,25 +342,23 @@ OUTPUT:
  "defensible_note": "65-year-old with diabetes and hypertension presenting with joint pains. Symptomatic treatment given. Review in 2 weeks or earlier if worsening."
 }
 """
-
 # what the website will send
 class CaseInput(BaseModel):
     email: str
     note: str
-
 @app.post("/analyze")
 def analyze_case(data: CaseInput):
 
-    # subscription check (now cached, instant)
+    # subscription check
     if not check_access(data.email):
         return {"error": "No active subscription"}
 
     # rule engine classification
     forced_class = rule_classify(data.note)
 
-    # AI rewrite - SWITCHED TO GPT-3.5-TURBO FOR SPEED
+    # AI rewrite
     response = client.chat.completions.create(
-        model="gpt-3.5-turbo",  # ← 10x faster than gpt-4.1-mini
+        model="gpt-4.1-mini",
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": data.note}
@@ -391,11 +376,7 @@ def analyze_case(data: CaseInput):
 
     return result
 
-# Health check endpoint for keep-alive
-@app.get("/health")
-def health():
-    return {"status": "ok"}
 
-# Serve frontend from the same folder as this file
-BASE_DIR = Path(__file__).resolve().parent
-app.mount("/", StaticFiles(directory=BASE_DIR, html=True), name="frontend")
+
+
+
