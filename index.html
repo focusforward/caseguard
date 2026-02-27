@@ -165,8 +165,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 <!-- HERO COMPACT -->
 <div class="hero-compact">
   <div class="hero-eyebrow">AI-Powered Review</div>
-  <h1>Your AI Shield Against Medico-Legal Risks</h1>
-  <p>Automate precise clinical documentation and eliminate liability gaps before they arise.</p>
+  <h1>Catch documentation gaps before they become legal risks</h1>
+  <p>Paste a case note. Get instant risk classification and a defensible chart version.</p>
 </div>
 
 <!-- TRUST PILLS -->
@@ -194,7 +194,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   <div class="field">
     <label>Your Email</label>
     <input type="email" id="emailInput" placeholder="doctor@example.com" autocomplete="email">
-    <div class="field-hint">Not registered? <a href="/cdn-cgi/l/email-protection#d7baaeb4b6a4b2b0a2b6a5b397b0bab6bebbf9b4b8ba">Email us to register →</a></div>
+    <div class="field-hint">Not registered? <a href="mailto:mycaseguard@gmail.com">Email us to register →</a></div>
   </div>
   <div class="field">
     <label>Case Note</label>
@@ -261,7 +261,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
         <li>Per-seat pricing</li>
         <li>Onboarding support</li>
       </ul>
-      <a href="/cdn-cgi/l/email-protection#cba6b2a8aab8aeacbeaab9af8baca6aaa2a7e5a8a4a6" class="btn-price-contact">✉ Contact Us</a>
+      <a href="mailto:mycaseguard@gmail.com" class="btn-price-contact">✉ Contact Us</a>
     </div>
     <div class="price-card dark">
       <div class="price-plan">Enterprise</div>
@@ -273,7 +273,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
         <li>Audit trail &amp; reporting</li>
         <li>Dedicated account manager</li>
       </ul>
-      <a href="/cdn-cgi/l/email-protection#cda0b4aeacbea8aab8acbfa98daaa0aca4a1e3aea2a0" class="btn-price-contact">✉ Contact Us</a>
+      <a href="mailto:mycaseguard@gmail.com" class="btn-price-contact">✉ Contact Us</a>
     </div>
   </div>
 </div>
@@ -325,22 +325,22 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   </div>
   <p>MedicoSafe™ is an AI-assisted documentation review tool. It does not replace clinical judgment or constitute legal advice.</p>
   <p style="margin-top:8px">
-    <a href="/cdn-cgi/l/email-protection#2944504a485a4c4e5c485b4d694e44484045074a4644">Privacy</a> &nbsp;·&nbsp;
-    <a href="/cdn-cgi/l/email-protection#75180c161406101200140711351218141c195b161a18">Terms</a> &nbsp;·&nbsp;
-    <a href="/cdn-cgi/l/email-protection#224f5b41435147455743504662454f434b4e0c414d4f">Contact</a>
+    <a href="mailto:mycaseguard@gmail.com">Privacy</a> &nbsp;·&nbsp;
+    <a href="mailto:mycaseguard@gmail.com">Terms</a> &nbsp;·&nbsp;
+    <a href="mailto:mycaseguard@gmail.com">Contact</a>
   </p>
 </footer>
 
 <!-- FLOATING CONTACT -->
 <div class="contact-float">
-  <a href="/cdn-cgi/l/email-protection#3f52465c5e4c5a584a5e4d5b7f58525e5653115c5052" class="contact-btn">
+  <a href="mailto:mycaseguard@gmail.com" class="contact-btn">
     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
     Get in Touch
   </a>
-  <a href="/cdn-cgi/l/email-protection#f5988c969486909280948791b59298949c99db969a98" class="contact-email"><span class="__cf_email__" data-cfemail="a5c8dcc6c4d6c0c2d0c4d7c1e5c2c8c4ccc98bc6cac8">[email&#160;protected]</span></a>
+  <a href="mailto:mycaseguard@gmail.com" class="contact-email">mycaseguard@gmail.com</a>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 function toggleSample() {
   var body = document.getElementById('sampleBody');
   var toggle = document.getElementById('sampleToggle');
@@ -429,4 +429,22 @@ async function analyze() {
       document.getElementById('result').scrollIntoView({behavior: 'smooth', block: 'nearest'});
     }
   } catch(e) {
-    result.innerHTML = '<div class="result-section"><div class="error-box">⚠ Unable 
+    result.innerHTML = '<div class="result-section"><div class="error-box">⚠ Unable to connect to server. Please try again shortly — the server may be waking up.</div></div>';
+  } finally {
+    clearInterval(iv);
+    loader.style.display = 'none';
+  }
+}
+
+function copyFinal() {
+  var el = document.getElementById('finalNote');
+  if (!el) return;
+  var text = el.innerText || el.textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    var msg = document.getElementById('copyMsg');
+    if (msg) { msg.style.display = 'block'; setTimeout(function(){ msg.style.display = 'none'; }, 2000); }
+  });
+}
+</script>
+</body>
+</html>
